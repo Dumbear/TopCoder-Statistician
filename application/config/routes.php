@@ -38,7 +38,9 @@
 |
 */
 
-$route['default_controller'] = "welcome";
+$route['default_controller'] = 'algorithm';
+$route['algorithm/srm'] = 'algorithm/index/srm';
+$route['algorithm/tour'] = 'algorithm/index/tour';
 $route['404_override'] = '';
 
 

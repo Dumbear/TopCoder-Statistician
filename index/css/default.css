@@ -1,0 +1,126 @@
+body, div, table, ul, h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: #000;
+	min-width: 800px;
+	max-width: 1200px;
+	margin: 8px auto;
+	font-size: 87.5%;
+	font-family: verdana, arial, sans-serif;
+	color: #FFF;
+}
+
+div, ul {
+	margin: 2px;
+	padding: 2px;
+}
+
+table {
+	margin: 8px 0;
+	border-style: none;
+	border-collapse: separate;
+	font-size: 100%;
+}
+
+h1 {
+	text-align: center;
+}
+
+a {
+	color: #FFF;
+}
+
+a:link, a:visited {
+	text-decoration: none;
+}
+
+a:hover, a:active {
+	text-decoration: underline;
+}
+
+.content {
+	margin-right: 24em;
+	padding-top: 8px;
+}
+
+.sidebar {
+	width: 22em;
+	padding-top: 8px;
+	float: right;
+}
+
+div.container {
+	margin: 8px auto;
+	padding: 0.5em;
+	border: 1px solid #DDD;
+	border-radius: 0.5em;
+	box-shadow: 0 0 1em #DDD;
+}
+
+div.container .heading {
+	border-bottom: 1px solid #AAA;
+	padding-bottom: 4px;
+	font-size: 120%;
+	font-weight: bold;
+}
+
+ul.menu {
+	list-style: none;
+}
+
+ul.menu li {
+	margin-right: 1em;
+	float: left;
+}
+
+ul.menu+div {
+	clear: left;
+}
+
+a.choice {
+	padding: 2px;
+	text-decoration: none;
+	color: #DDD;
+}
+
+a.choice:hover, a.choice:active, a.choice.current {
+	background-color: #888;
+	border-radius: 0.3em;
+}
+
+table.gadget {
+	width: 100%;
+}
+
+table.gadget th {
+	background-color: #024;
+	padding: 2px 0.8em;
+	text-align: left;
+	color: #FC3;
+}
+
+table.gadget td {
+	padding: 0 0.8em;
+}
+
+table.gadget a {
+	color: #FF0;
+}
+
+table.data th {
+	background-color: #024;
+	padding: 2px 0.8em;
+	text-align: left;
+	color: #FC3;
+}
+
+table.data th.match {
+	width: 10em;
+}
+
+table.data th.time {
+	width: 10em;
+}
