@@ -39,8 +39,12 @@
 */
 
 $route['default_controller'] = 'algorithm';
+$route['algorithm/all'] = 'algorithm/index/all';
+$route['algorithm/all/(:num)'] = 'algorithm/index/all/$1';
 $route['algorithm/srm'] = 'algorithm/index/srm';
+$route['algorithm/srm/(:num)'] = 'algorithm/index/srm/$1';
 $route['algorithm/tour'] = 'algorithm/index/tour';
+$route['algorithm/tour/(:num)'] = 'algorithm/index/tour/$1';
 $route['404_override'] = '';
 
 

@@ -3,11 +3,14 @@
 <head>
 	<base href="<?php echo site_url(); ?>" />
 	<link href="css/default.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="js/md5-min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
 </head>
 <body>
 
 <div class="header">
-	<h1>WHUACM@TopCoder - Algorithm</h1>
+	<h1>WHUACM@TopCoder<?php if (isset($module)) echo " - {$module}"; ?></h1>
 </div>
 
 <?php echo $content; ?>

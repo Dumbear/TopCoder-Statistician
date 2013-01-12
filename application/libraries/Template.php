@@ -7,12 +7,19 @@ class Template {
 		$this->CI =& get_instance();
 	}
 
-	public function display($view, $data = array(), $return = false) {
+	public function display_algorithm($view, $data = array(), $return = false) {
 		$data['content'] = $this->CI->load->view($view, $data, true);
+		$data['module'] = 'Algorithm';
+		return $this->CI->load->view('template', $data, $return);
+	}
+
+	public function display_admin($view, $data = array(), $return = false) {
+		$data['content'] = $this->CI->load->view($view, $data, true);
+		$data['module'] = 'Administration';
 		return $this->CI->load->view('template', $data, $return);
 	}
 }
 
-/* End of file template.php */
-/* Location: ./application/libraries/template.php */
+/* End of file Template.php */
+/* Location: ./application/libraries/Template.php */
 ?>

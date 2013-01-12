@@ -42,14 +42,19 @@ a:hover, a:active {
 }
 
 .content {
-	margin-right: 24em;
+	width: 70%;
 	padding-top: 8px;
+	float: left;
 }
 
 .sidebar {
-	width: 22em;
+	width: 25%;
 	padding-top: 8px;
 	float: right;
+}
+
+.sidebar+div {
+	clear: both;
 }
 
 div.container {
@@ -77,7 +82,7 @@ ul.menu li {
 }
 
 ul.menu+div {
-	clear: left;
+	clear: both;
 }
 
 a.choice {
@@ -91,36 +96,65 @@ a.choice:hover, a.choice:active, a.choice.current {
 	border-radius: 0.3em;
 }
 
-table.gadget {
+div.left-column, div.right-column {
+	width: 48%;
+}
+
+div.left-column {
+	float: left;
+}
+
+div.right-column {
+	float: right;
+}
+
+div.right-column+div {
+	clear: both;
+}
+
+table {
 	width: 100%;
 }
 
-table.gadget th {
+table th {
 	background-color: #024;
 	padding: 2px 0.8em;
 	text-align: left;
 	color: #FC3;
 }
 
-table.gadget td {
+table td {
 	padding: 0 0.8em;
+}
+
+table.fixed {
+	table-layout: fixed;
 }
 
 table.gadget a {
 	color: #FF0;
 }
 
-table.data th {
-	background-color: #024;
-	padding: 2px 0.8em;
-	text-align: left;
-	color: #FC3;
+table.match-list {
+	margin-top: -8px;
+	margin-bottom: -8px;
+	table-layout: fixed;
 }
 
-table.data th.match {
-	width: 10em;
+table.match-list td.match {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
-table.data th.time {
-	width: 10em;
+table.match-list td.time {
+	color: #00A900;
+}
+
+table.match-list a.match {
+	color: #F90;
+}
+
+div.pagination strong {
+	font-style: oblique;
 }

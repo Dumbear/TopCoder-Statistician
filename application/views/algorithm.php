@@ -1,4 +1,58 @@
 <div class="body">
+	<div class="content">
+		<div class="container">
+			<div class="heading">Match Archive</div>
+			<ul class="menu">
+				<li><a href="algorithm" class="choice<?php if ($type === 'all') echo ' current' ?>">All</a></li>
+				<li>|</li>
+				<li><a href="algorithm/srm" class="choice<?php if ($type === 'srm') echo ' current' ?>">Single Round Match</a></li>
+				<li><a href="algorithm/tour" class="choice<?php if ($type === 'tour') echo ' current' ?>">Tournament</a></li>
+			</ul>
+			<div></div>
+			<div class="pagination"><?php echo $pagination; ?></div>
+<?php	$count = 0; ?>
+			<div class="left-column">
+				<table class="data match-list">
+					<thead>
+						<tr>
+							<th style="width: 14em">Match</th>
+							<th style="width: 10em">Time</th>
+						</tr>
+<?php	while ($count < 50 && $count < count($matches)) { ?>
+						<tr>
+							<td class="match"><a href="algorithm/match/<?php echo $matches[$count]->id; ?>" class="match"><?php echo $matches[$count]->short_name; ?></a></td>
+							<td class="time"><?php echo $matches[$count]->time; ?></td>
+						</tr>
+<?php		++$count; ?>
+<?php	} ?>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="right-column">
+				<table class="data match-list">
+					<thead>
+						<tr>
+							<th style="width: 14em">Match</th>
+							<th style="width: 10em">Time</th>
+						</tr>
+<?php	while ($count < 100 && $count < count($matches)) { ?>
+						<tr>
+							<td class="match"><a href="algorithm/match/<?php echo $matches[$count]->id; ?>" class="match"><?php echo $matches[$count]->short_name; ?></a></td>
+							<td class="time"><?php echo $matches[$count]->time; ?></td>
+						</tr>
+<?php		++$count; ?>
+<?php	} ?>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div></div>
+			<div class="pagination"><?php echo $pagination; ?></div>
+		</div>
+	</div>
 	<div class="sidebar">
 		<div class="container">
 			<div class="heading">Gadgets</div>
@@ -13,29 +67,27 @@
 				<tr><td><a href="">Compete between WHUACMers</a></td></tr>
 			</table>
 		</div>
-	</div>
-	<div class="content">
 		<div class="container">
-			<div class="heading">Match Archive</div>
-			<ul class="menu">
-				<li><a href="algorithm" class="choice<?php if ($type === 'all') echo ' current' ?>">All</a></li>
-				<li>|</li>
-				<li><a href="algorithm/srm" class="choice<?php if ($type === 'srm') echo ' current' ?>">Single Round Match</a></li>
-				<li><a href="algorithm/tour" class="choice<?php if ($type === 'tour') echo ' current' ?>">Tournament</a></li>
-			</ul>
-			<div></div>
-			<div>
-				<table class="data">
-					<thead>
-						<tr>
-							<th class="match">Match</th>
-							<th class="time">Time</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
+			<div class="heading">Admin</div>
+<?php	if ($this->session->userdata('admin') === false) { ?>
+			<form action="admin/login" method="post" class="login">
+				<table class="gadget">
+					<tr><th colspan="3">Login</th></tr>
+					<tr><td>Key:</td><td><input name="key" type="password" style="width: 10em" /></td><td><input type="submit" value="Login" /></td></tr>
 				</table>
-			</div>
+			</form>
+<?php	} else { ?>
+			<table class="gadget">
+				<tr><th>Manage</th></tr>
+				<tr><td><a href="admin">Enter</a></td></tr>
+				<tr><td><a href="admin/logout">Logout</a></td></tr>
+			</table>
+<?php	} ?>
+			<table class="gadget">
+				<tr><th>Update</th></tr>
+				<tr><td>Last Update: </td></tr>
+			</table>
 		</div>
 	</div>
+	<div></div>
 </div>
