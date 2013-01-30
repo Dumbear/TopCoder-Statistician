@@ -19,6 +19,7 @@ div, ul {
 }
 
 table {
+	width: 100%;
 	margin: 8px 0;
 	border-style: none;
 	border-collapse: separate;
@@ -112,10 +113,6 @@ div.right-column+div {
 	clear: both;
 }
 
-table {
-	width: 100%;
-}
-
 table th {
 	background-color: #024;
 	padding: 2px 0.8em;
@@ -157,4 +154,78 @@ table.match-list a.match {
 
 div.pagination strong {
 	font-style: oblique;
+}
+
+.disabled {
+	text-decoration: line-through;
+}
+
+.match.heading {
+	color: #F90;
+}
+
+table.tight {
+	border-collapse: collapse;
+	font-size: 12px;
+}
+
+.coder, .rating {
+	font-weight: bold;
+}
+
+.coder.l1, .rating.l1 {
+	color: #E00;
+}
+
+.coder.l2, .rating.l2 {
+	color: #DC0;
+}
+
+.coder.l3, .rating.l3 {
+	color: #66F;
+}
+
+.coder.l4, .rating.l4 {
+	color: #00A900;
+}
+
+.coder.l5, .rating.l5 {
+	color: #999;
+}
+
+.result.cpp {
+	font-style: oblique;
+	font-weight: bold;
+	color: #FF9;
+}
+
+.result.failed {
+	font-style: oblique;
+	color: #F03;
+}
+
+.result.hacked {
+	font-style: oblique;
+	font-weight: bold;
+	color: #0F0;
+}
+
+.bonus.up {
+	font-style: oblique;
+	font-weight: bold;
+	color: #0F0;
+}
+
+.bonus.down {
+	font-style: oblique;
+	font-weight: bold;
+	color: #F03;
+}
+
+.rating-change.up {
+	color: #0F0;
+}
+
+.rating-change.down {
+	color: #F00;
 }

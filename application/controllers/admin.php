@@ -13,17 +13,15 @@ class Admin extends CI_Controller {
 
 		$this->load->model('algorithm_model');
 		$data = array();
-		$data['admin_info'] = $this->admin_model->get_info();
+		$data['algorithm_status'] = $this->algorithm_model->get_status();
 		$data['pending_algorithm_matches'] = $this->algorithm_model->get_pending_matches();
 		$data['pending_algorithm_coders'] = $this->algorithm_model->get_pending_coders();
-		$data['new_algorithm_matches'] = $this->algorithm_model->get_new_matches();
 		$this->template->display_admin('admin', $data);
 	}
 
 	public function algorithm($operation, $param = '') {
 		$op_list = array(
-			'refresh',
-			'add_matches',
+			'refresh_and_update',
 			'add_coders'
 		);
 		if (in_array($operation, $op_list)) {
@@ -31,19 +29,15 @@ class Admin extends CI_Controller {
 			redirect('/admin');
 		}
 
-		if ($operation === 'do_refresh') {
+		if ($operation === 'do_refresh_and_update') {
 			$this->load->model('algorithm_model');
-			$this->algorithm_model->add_new_matches();
-			return;
-		}
-
-		if ($operation === 'do_add_matches') {
-			$this->load->model('algorithm_model');
-			$this->algorithm_model->add_matches();
+			$this->algorithm_model->refresh_and_update_match_archive();
 			return;
 		}
 
 		if ($operation === 'do_add_coders') {
+			//TODO
+			return;
 		}
 
 		redirect('/admin');

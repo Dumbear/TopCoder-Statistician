@@ -15,7 +15,7 @@
 				<table class="data match-list">
 					<thead>
 						<tr>
-							<th style="width: 14em">Match</th>
+							<th>Match</th>
 							<th style="width: 10em">Time</th>
 						</tr>
 <?php	while ($count < 50 && $count < count($matches)) { ?>
@@ -34,7 +34,7 @@
 				<table class="data match-list">
 					<thead>
 						<tr>
-							<th style="width: 14em">Match</th>
+							<th>Match</th>
 							<th style="width: 10em">Time</th>
 						</tr>
 <?php	while ($count < 100 && $count < count($matches)) { ?>
@@ -58,13 +58,13 @@
 			<div class="heading">Gadgets</div>
 			<table class="gadget">
 				<tr><th>Statistics</th></tr>
-				<tr><td><a href="">All WHUACMers</a></td></tr>
+				<tr><td><a href="javascript: void(0)">All WHUACMers</a></td></tr>
 				<tr><th>Records</th></tr>
-				<tr><td><a href="">First Coders to Achieve Highest Ratings</a></td></tr>
-				<tr><td><a href="">Top 20 Division Ranks</a></td></tr>
-				<tr><td><a href="">Top 20 Problem Ranks</a></td></tr>
+				<tr><td><a href="javascript: void(0)">First Coders to Achieve Highest Ratings</a></td></tr>
+				<tr><td><a href="javascript: void(0)">Top 20 Division Ranks</a></td></tr>
+				<tr><td><a href="javascript: void(0)">Top 20 Problem Ranks</a></td></tr>
 				<tr><th>Tools</th></tr>
-				<tr><td><a href="">Compete between WHUACMers</a></td></tr>
+				<tr><td><a href="javascript: void(0)">Compete between WHUACMers</a></td></tr>
 			</table>
 		</div>
 		<div class="container">
@@ -84,8 +84,8 @@
 			</table>
 <?php	} ?>
 			<table class="gadget">
-				<tr><th>Update</th></tr>
-				<tr><td>Last Update: </td></tr>
+				<tr><th colspan="2">Update</th></tr>
+				<tr><td>Last Update:</td><td><?php echo $status->timestamp; ?></td></tr>
 			</table>
 		</div>
 	</div>

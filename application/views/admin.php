@@ -5,17 +5,17 @@
 			<div>
 				<table class="gadget fixed">
 					<tr><th colspan="2">Status</th></tr>
-					<tr><td>Last Update:</td><td></td></tr>
+					<tr><td>Last Update:</td><td><?php echo $algorithm_status->timestamp; ?></td></tr>
 					<tr>
 						<td>Current Status:</td>
-						<td><?php echo $admin_info->algorithm_status === null ? 'All Done.' : $admin_info->algorithm_status; ?></td>
+						<td><?php echo $algorithm_status->status === null ? 'All Done.' : $algorithm_status->status; ?></td>
 					</tr>
 <?php	if (count($pending_algorithm_matches) === 0) { ?>
 					<tr><td>Pending Matches:</td><td>None.</td></tr>
 <?php	} else { ?>
 					<tr><td rowspan="<?php echo count($pending_algorithm_matches) + 1; ?>">Pending Matches:</td><th>Match</th></tr>
 <?php		foreach ($pending_algorithm_matches as $match) { ?>
-					<tr><td><?php echo $match->short_name; ?></td></tr>
+					<tr><td><a href="javascript: void(0)"><?php echo $match->short_name; ?></a></td></tr>
 <?php		} ?>
 <?php	} ?>
 <?php	if (count($pending_algorithm_coders) === 0) { ?>
@@ -26,21 +26,21 @@
 					<tr><td><?php echo $coder->handle; ?></td></tr>
 <?php		} ?>
 <?php	} ?>
+					<tr><td>Log:</td><td><?php echo $algorithm_status->log; ?></td></tr>
 					<tr><th colspan="2">Operation</th></tr>
-					<tr><td>Refresh Match Archive:</td><td><a href="admin/algorithm/refresh">Refresh</a></td></tr>
-<?php	if (count($new_algorithm_matches) === 0) { ?>
-					<tr><td>New Matches:</td><td>None.</td></tr>
+<?php	if ($algorithm_status->locked === '0') { ?>
+					<tr><td>Refresh &amp; Update Match Archive:</td><td><a href="admin/algorithm/refresh_and_update">Refresh &amp; Update</a></td></tr>
 <?php	} else { ?>
-					<tr><td rowspan="<?php echo count($new_algorithm_matches) + 2; ?>">New Matches:</td><th>Match</th></tr>
-<?php		foreach ($new_algorithm_matches as $match) { ?>
-					<tr><td><?php echo $match->short_name; ?></td></tr>
-<?php		} ?>
-					<tr><td><a href="admin/algorithm/add_matches">Add All</a></td></tr>
+					<tr><td>Refresh &amp; Update Match Archive:</td><td><a href="javascript: void(0)" style="text-decoration: line-through">Refresh &amp; Update</a></td></tr>
 <?php	} ?>
-					<tr><td rowspan="4">Add Coders:</td><th>Coder</th></tr>
+					<tr><td rowspan="5">Add Coders:</td><th>Coder</th></tr>
 					<tr><td><input id="input_add_coders" type="text" style="width: 16em" /></td></tr>
-					<tr><td class="notice">* Use space to separate coders.</td></tr>
+					<tr><td class="notice">* Like <span style="font-style: oblique">handle1,realname1 handle2,realname2...</span></td></tr>
+<?php	if ($algorithm_status->locked === '0') { ?>
 					<tr><td><a id="a_add_coders" href="javascript: void(0)">Add All</a></td></tr>
+<?php	} else { ?>
+					<tr><td><a href="javascript: void(0)" style="text-decoration: line-through">Add All</a></td></tr>
+<?php	} ?>
 				</table>
 			</div>
 		</div>
