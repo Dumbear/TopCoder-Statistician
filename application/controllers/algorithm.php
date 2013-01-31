@@ -30,14 +30,24 @@ class Algorithm extends CI_Controller {
 		$this->template->display_algorithm('algorithm', $data);
 	}
 
-	public function match($match_id) {
+	public function match($id) {
 		$data = array();
-		$data['match'] = $this->algorithm_model->get_match((int)$match_id);
+		$data['match'] = $this->algorithm_model->get_match((int)$id);
 		if ($data['match'] === null) {
 			show_404();
 		}
-		$data['results'] = $this->algorithm_model->get_match_results((int)$match_id);
+		$data['results'] = $this->algorithm_model->get_match_results((int)$id);
 		$this->template->display_algorithm('algorithm_match', $data);
+	}
+
+	public function coder($id) {
+		$data = array();
+		$data['coder'] = $this->algorithm_model->get_coder((int)$id);
+		if ($data['coder'] === null) {
+			show_404();
+		}
+		$data['results'] = $this->algorithm_model->get_match_results_of_coder((int)$id);
+		$this->template->display_algorithm('algorithm_coder', $data);
 	}
 }
 

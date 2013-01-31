@@ -92,6 +92,13 @@ class Algorithm_model extends CI_Model {
 		return $query->num_rows() === 1 ? $query->row() : null;
 	}
 
+	public function get_coder($id) {
+		$this->db->from('coders');
+		$this->db->where('id', $id);
+		$query = $this->db->get();
+		return $query->num_rows() === 1 ? $query->row() : null;
+	}
+
 	public function get_match_results($match_id) {
 		$results = array(array(), array());
 		$this->db->select('algorithm_match_results.*, coders.handle');
@@ -109,6 +116,15 @@ class Algorithm_model extends CI_Model {
 			}
 		}
 		return $results;
+	}
+
+	public function get_match_results_of_coder($coder_id) {
+		$this->db->from('algorithm_match_results');
+		$this->db->join('algorithm_matches', 'algorithm_match_results.match_id = algorithm_matches.id', 'inner');
+		$this->db->where('coder_id', $coder_id);
+		$this->db->order_by('time DESC');
+		$query = $this->db->get();
+		return $query->result();
 	}
 
 	public function get_status() {

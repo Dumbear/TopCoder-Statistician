@@ -32,6 +32,12 @@ if (!function_exists('fetch_algorithm_match_results')) {
 	}
 }
 
+if (!function_exists('algorithm_coder_url')) {
+	function algorithm_coder_url($coder_id) {
+		return "http://community.topcoder.com/tc?module=MemberProfile&cr={$coder_id}&tab=alg";
+	}
+}
+
 if (!function_exists('algorithm_match_url')) {
 	function algorithm_match_url($match_id) {
 		return "http://community.topcoder.com/stat?c=round_stats&rd={$match_id}";

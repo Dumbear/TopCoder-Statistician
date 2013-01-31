@@ -148,10 +148,6 @@ table.match-list td.time {
 	color: #00A900;
 }
 
-table.match-list a.match {
-	color: #F90;
-}
-
 div.pagination strong {
 	font-style: oblique;
 }
@@ -160,7 +156,7 @@ div.pagination strong {
 	text-decoration: line-through;
 }
 
-.match.heading {
+a.match {
 	color: #F90;
 }
 

@@ -10,16 +10,16 @@
 				<table class="tight"<?php if (count($results[0]) === 0) echo ' style="display: none"'; ?>>
 					<thead>
 						<tr>
-							<th style="width: 3em">Rank</th>
+							<th>Rank</th>
 							<th>Handle</th>
-							<th style="width: 4em">Points</th>
-							<th style="width: 12em">Level 1</th>
-							<th style="width: 12em">Level 2</th>
-							<th style="width: 12em">Level 3</th>
-							<th style="width: 9em">Challenge</th>
-							<th style="width: 4em">Rating</th>
-							<th style="width: 8em">Rating Change</th>
-							<th style="width: 5em">Volatility</th>
+							<th>Points</th>
+							<th>Level 1</th>
+							<th>Level 2</th>
+							<th>Level 3</th>
+							<th>Challenge</th>
+							<th>Rating</th>
+							<th>Rating Change</th>
+							<th>Volatility</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -44,7 +44,7 @@
 							<td><span class="result <?php echo get_problem_status_css($problem_status); ?>"><?php echo $problem_status; ?></span></td>
 <?php			} ?>
 <?php		} ?>
-							<td>+<?php echo $result->n_successful_challenges; ?> / -<?php echo $result->n_failed_challenges; ?> = <span class="bonus <?php echo get_challenge_points_css($challenge_points); ?>"><?php echo sprintf('%.2f', $challenge_points); ?></span></td>
+							<td>+<?php echo $result->n_successful_challenges; ?>/-<?php echo $result->n_failed_challenges; ?> = <span class="bonus <?php echo get_challenge_points_css($challenge_points); ?>"><?php echo sprintf('%.2f', $challenge_points); ?></span></td>
 							<td><span class="rating <?php echo get_rating_css($new_rating); ?>"><?php echo $new_rating; ?></span></td>
 <?php		 ?>
 							<td><span class="rating-change <?php echo get_rating_change_css($old_rating, $new_rating); ?>"><?php echo $rating_change; ?></span></td>
@@ -64,16 +64,16 @@
 				<table class="tight"<?php if (count($results[1]) === 0) echo ' style="display: none"'; ?>>
 					<thead>
 						<tr>
-							<th style="width: 3em">Rank</th>
+							<th>Rank</th>
 							<th>Handle</th>
-							<th style="width: 4em">Points</th>
-							<th style="width: 12em">Level 1</th>
-							<th style="width: 12em">Level 2</th>
-							<th style="width: 12em">Level 3</th>
-							<th style="width: 9em">Challenge</th>
-							<th style="width: 4em">Rating</th>
-							<th style="width: 8em">Rating Change</th>
-							<th style="width: 5em">Volatility</th>
+							<th>Points</th>
+							<th>Level 1</th>
+							<th>Level 2</th>
+							<th>Level 3</th>
+							<th>Challenge</th>
+							<th>Rating</th>
+							<th>Rating Change</th>
+							<th>Volatility</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -98,7 +98,7 @@
 							<td><span class="result <?php echo get_problem_status_css($problem_status); ?>"><?php echo $problem_status; ?></span></td>
 <?php			} ?>
 <?php		} ?>
-							<td>+<?php echo $result->n_successful_challenges; ?> / -<?php echo $result->n_failed_challenges; ?> = <span class="bonus <?php echo get_challenge_points_css($challenge_points); ?>"><?php echo sprintf('%.2f', $challenge_points); ?></span></td>
+							<td>+<?php echo $result->n_successful_challenges; ?>/-<?php echo $result->n_failed_challenges; ?> = <span class="bonus <?php echo get_challenge_points_css($challenge_points); ?>"><?php echo sprintf('%.2f', $challenge_points); ?></span></td>
 							<td><span class="rating <?php echo get_rating_css($new_rating); ?>"><?php echo $new_rating; ?></span></td>
 <?php		 ?>
 							<td><span class="rating-change <?php echo get_rating_change_css($old_rating, $new_rating); ?>"><?php echo $rating_change; ?></span></td>
