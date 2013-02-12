@@ -7,6 +7,9 @@
 		<div class="container">
 			<div class="heading">Competition History</div>
 			<div>
+<?php	if (count($results) === 0) { ?>
+				<span class="info">No competition history.</span>
+<?php	} ?>
 				<table class="tight"<?php if (count($results) === 0) echo ' style="display: none"'; ?>>
 					<thead>
 						<tr>
@@ -48,7 +51,6 @@
 <?php		} ?>
 							<td>+<?php echo $result->n_successful_challenges; ?>/-<?php echo $result->n_failed_challenges; ?> = <span class="bonus <?php echo get_challenge_points_css($challenge_points); ?>"><?php echo sprintf('%.2f', $challenge_points); ?></span></td>
 							<td><span class="rating <?php echo get_rating_css($new_rating); ?>"><?php echo $new_rating; ?></span></td>
-<?php		 ?>
 							<td><span class="rating-change <?php echo get_rating_change_css($old_rating, $new_rating); ?>"><?php echo $rating_change; ?></span></td>
 							<td><?php echo $result->new_volatility; ?></td>
 						</tr>

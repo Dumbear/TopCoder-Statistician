@@ -49,6 +49,12 @@ class Algorithm extends CI_Controller {
 		$data['results'] = $this->algorithm_model->get_match_results_of_coder((int)$id);
 		$this->template->display_algorithm('algorithm_coder', $data);
 	}
+
+	public function all_coders() {
+		$data = array();
+		$data['coders'] = $this->algorithm_model->get_all_coders();
+		$this->template->display_algorithm('algorithm_all_coders', $data);
+	}
 }
 
 /* End of file algorithm.php */

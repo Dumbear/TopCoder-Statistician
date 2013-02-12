@@ -13,7 +13,29 @@ if (!function_exists('curl_operate')) {
 if (!function_exists('fetch_algorithm_match_list')) {
 	function fetch_algorithm_match_list() {
 		try {
-			$data = new SimpleXMLElement('http://www.topcoder.com/tc?module=BasicData&c=dd_round_list', null, true);
+			$data = new SimpleXMLElement('http://community.topcoder.com/tc?module=BasicData&c=dd_round_list', null, true);
+			return $data;
+		} catch (Exception $e) {
+		}
+		return false;
+	}
+}
+
+if (!function_exists('fetch_coder_list')) {
+	function fetch_coder_list() {
+		try {
+			$data = new SimpleXMLElement('http://community.topcoder.com/tc?module=BasicData&c=dd_coder_list', null, true);
+			return $data;
+		} catch (Exception $e) {
+		}
+		return false;
+	}
+}
+
+if (!function_exists('fetch_algorithm_history')) {
+	function fetch_algorithm_history($coder_id) {
+		try {
+			$data = new SimpleXMLElement("http://community.topcoder.com/tc?module=BasicData&c=dd_rating_history&cr={$coder_id}", null, true);
 			return $data;
 		} catch (Exception $e) {
 		}
@@ -24,7 +46,7 @@ if (!function_exists('fetch_algorithm_match_list')) {
 if (!function_exists('fetch_algorithm_match_results')) {
 	function fetch_algorithm_match_results($id) {
 		try {
-			$data = new SimpleXMLElement("http://www.topcoder.com/tc?module=BasicData&c=dd_round_results&rd={$id}", null, true);
+			$data = new SimpleXMLElement("http://community.topcoder.com/tc?module=BasicData&c=dd_round_results&rd={$id}", null, true);
 			return $data;
 		} catch (Exception $e) {
 		}

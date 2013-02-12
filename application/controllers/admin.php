@@ -25,7 +25,14 @@ class Admin extends CI_Controller {
 			'add_coders'
 		);
 		if (in_array($operation, $op_list)) {
-			curl_operate(site_url("admin/algorithm/do_{$operation}/{$param}"));
+			if ($this->session->userdata('admin') !== false) {
+				curl_operate(site_url("admin/algorithm/do_{$operation}/{$param}"));
+			}
+			redirect('/admin');
+		}
+
+		if ($this->input->ip_address() !== '127.0.0.1') {
+			//TODO: need to check more securely
 			redirect('/admin');
 		}
 
@@ -36,7 +43,19 @@ class Admin extends CI_Controller {
 		}
 
 		if ($operation === 'do_add_coders') {
-			//TODO
+			$coders = array();
+			foreach (explode(' ', rawurldecode($param)) as $coder) {
+				$coder = explode(':', $coder);
+				if (count($coder) !== 2) {
+					continue;
+				}
+				if (($handle = trim($coder[0])) === '' || ($real_name = trim($coder[1])) === '') {
+					continue;
+				}
+				array_push($coders, array('handle' => $handle, 'real_name' => $real_name));
+			}
+			$this->load->model('algorithm_model');
+			$this->algorithm_model->add_coders($coders);
 			return;
 		}
 

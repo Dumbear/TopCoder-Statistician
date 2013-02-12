@@ -46,26 +46,35 @@ class Algorithm_model extends CI_Model {
 	}
 
 	public function count_useful_matches($type) {
-		//TODO
+		//TODO: make it useful
 		$this->db->from('algorithm_matches');
 		//$this->db->join('algorithm_match_results', 'algorithm_matches.id = algorithm_match_results.match_id', 'inner');
-		$this->db->where('status', $this->map_match_status['ok']);
 		if ($type !== 'all') {
 			$this->db->where('type', ($type === 'srm' ? $this->map_match_type['srm'] : $this->map_match_type['tour']));
 		}
-		//$this->db->group_by('algorithm_matches.id');
 		return $this->db->count_all_results();
 	}
 
 	public function get_useful_matches($type, $limit, $offset) {
-		//TODO
+		//TODO: make it useful
 		$this->db->from('algorithm_matches');
-		$this->db->where('status', $this->map_match_status['ok']);
 		if ($type !== 'all') {
 			$this->db->where('type', ($type === 'srm' ? $this->map_match_type['srm'] : $this->map_match_type['tour']));
 		}
 		$this->db->order_by('time DESC');
 		$this->db->limit($limit, $offset);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function get_all_coders() {
+		$this->db->select('coders.*');
+		$this->db->select_max('new_rating', 'max_rating');
+		$this->db->select_min('new_rating', 'min_rating');
+		$this->db->from('coders');
+		$this->db->join('algorithm_match_results', 'coders.id = algorithm_match_results.coder_id', 'inner');
+		$this->db->group_by('coders.id');
+		$this->db->order_by('algorithm_rating DESC, coders.id');
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -205,6 +214,40 @@ class Algorithm_model extends CI_Model {
 		return $new_matches;
 	}
 
+	protected function do_fetch_coders($coders) {
+		$new_coders = array();
+		$this->update_status('Fetching coders...');
+		$data = fetch_coder_list();
+		if ($data === false) {
+			$new_coders = false;
+		} else {
+			foreach ($data->row as $row) {
+				$found = false;
+				foreach ($coders as $coder) {
+					if ($coder['handle'] === (string)$row->handle) {
+						$found = $coder;
+						break;
+					}
+				}
+				if ($found === false) {
+					continue;
+				}
+				array_push($new_coders, array(
+					'id'				   => (int)$row->coder_id,
+					'handle'			   => (string)$row->handle,
+					'real_name'			   => (string)$found['real_name'],
+					'algorithm_rating'	   => (int)$row->alg_rating,
+					'algorithm_volatility' => (int)$row->alg_vol,
+					'n_algorithm_matches'  => (int)$row->alg_num_ratings,
+					'status'			   => $this->map_coder_status['pending']
+				));
+			}
+		}
+		$this->update_status(null);
+		$this->update_log('Fetching coders: ' . ($new_coders === false ? 'failed' : 'done') . '.');
+		return $new_coders;
+	}
+
 	protected function do_fetch_results($match) {
 		$results = array();
 		$this->update_status("Fetching match {$match->short_name} results...");
@@ -302,6 +345,35 @@ class Algorithm_model extends CI_Model {
 		return $ok;
 	}
 
+	protected function do_update_coders() {
+		$ok = true;
+		$this->update_status('Updating coders...');
+		$matches = array();
+		$pending_coders = $this->get_pending_coders();
+		foreach ($pending_coders as $coder) {
+			$history = fetch_algorithm_history($coder->id);
+			if ($history !== false) {
+				foreach ($history->row as $row) {
+					$matches[(string)$row->round_id] = null;
+				}
+				$this->db->set('status', $this->map_coder_status['ok']);
+				$this->db->where('id', (int)$coder->id);
+				$this->db->update('coders');
+			}
+		}
+		$this->db->set('status', $this->map_match_status['pending']);
+		$this->db->where_in('id', array_keys($matches));
+		$this->db->update('algorithm_matches');
+		foreach (array_keys($matches) as $id) {
+			if (($match = $this->get_match((int)$id)) !== null) {
+				$this->do_update_match($match);
+			}
+		}
+		$this->update_status(null);
+		$this->update_log('Updating coders: ' . ($ok === false ? 'failed' : 'done') . '.');
+		return $ok;
+	}
+
 	protected function do_refresh_match_archive() {
 		$ok = true;
 		$this->update_status('Refreshing match archive...');
@@ -328,6 +400,27 @@ class Algorithm_model extends CI_Model {
 		return $ok;
 	}
 
+	protected function do_add_coders($coders) {
+		$ok = true;
+		$this->update_status('Adding coders...');
+		$coders = $this->do_fetch_coders($coders);
+		if ($coders !== false && count($coders) > 0) {
+			if ($this->db->insert_batch('coders', $coders) !== true) {
+				$ok = false;
+			}
+		}
+		$this->update_status(null);
+		$this->update_log('Adding coders: ' . ($ok === false ? 'failed' : 'done') . '.');
+		return $ok;
+	}
+
+	protected function do_resolve_all_coders() {
+		$this->db->set('algorithm_rating', '(SELECT `new_rating` FROM `algorithm_match_results` INNER JOIN `algorithm_matches` ON `algorithm_match_results`.`match_id` = `algorithm_matches`.`id` WHERE `algorithm_match_results`.`coder_id` = `coders`.`id` ORDER BY `algorithm_matches`.`time` DESC LIMIT 1)', false);
+		$this->db->set('algorithm_volatility', '(SELECT `new_volatility` FROM `algorithm_match_results` INNER JOIN `algorithm_matches` ON `algorithm_match_results`.`match_id` = `algorithm_matches`.`id` WHERE `algorithm_match_results`.`coder_id` = `coders`.`id` ORDER BY `algorithm_matches`.`time` DESC LIMIT 1)', false);
+		$this->db->set('n_algorithm_matches', '(SELECT COUNT(*) FROM `algorithm_match_results` WHERE `algorithm_match_results`.`coder_id` = `coders`.`id`)', false);
+		$this->db->update('coders');
+	}
+
 	public function refresh_and_update_match_archive() {
 		if ($this->lock() === false) {
 			return false;
@@ -343,6 +436,43 @@ class Algorithm_model extends CI_Model {
 
 		if ($ok && $this->do_update_match_archive() === false) {
 			$ok = false;
+		}
+
+		if ($ok) {
+			$this->do_resolve_all_coders();
+		}
+
+		if ($ok) {
+			$this->update_timestamp();
+		}
+
+		$this->unlock();
+		return $ok;
+	}
+
+	public function add_coders($coders) {
+		if (count($coders) === 0) {
+			return true;
+		}
+
+		if ($this->lock() === false) {
+			return false;
+		}
+
+		$ok = true;
+
+		$this->update_log('Will add coders: ', false);
+
+		if ($ok && $this->do_add_coders($coders) === false) {
+			$ok = false;
+		}
+
+		if ($ok && $this->do_update_coders() === false) {
+			$ok = false;
+		}
+
+		if ($ok) {
+			$this->do_resolve_all_coders();
 		}
 
 		if ($ok) {
