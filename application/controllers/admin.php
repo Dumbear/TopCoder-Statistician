@@ -31,7 +31,7 @@ class Admin extends CI_Controller {
 			redirect('/admin');
 		}
 
-		if ($this->input->ip_address() !== '127.0.0.1') {
+		if ($this->input->ip_address() !== '127.0.0.1' && $this->input->ip_address() !== $this->input->server('SERVER_ADDR')) {
 			//TODO: need to check more securely
 			redirect('/admin');
 		}
