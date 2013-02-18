@@ -107,9 +107,17 @@ if (!function_exists('get_problem_status_css')) {
 
 if (!function_exists('get_language_css')) {
 	function get_language_css($language) {
-		//TODO: other languages
 		if ($language === 'C++') {
 			return 'cpp';
+		}
+		if ($language === 'Java') {
+			return 'java';
+		}
+		if ($language === 'C#') {
+			return 'csharp';
+		}
+		if ($language === 'VB') {
+			return 'vb';
 		}
 		return 'default';
 	}

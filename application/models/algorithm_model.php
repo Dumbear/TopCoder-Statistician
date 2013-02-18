@@ -256,11 +256,20 @@ class Algorithm_model extends CI_Model {
 			$results = false;
 		} else {
 			$ids_array = $this->get_all_coder_ids();
+			$problem_time_array = array('1' => array(array(), array(), array()), '2' => array(array(), array(), array()));
 			foreach ($data->row as $row) {
+				if ((string)$row->level_one_status === 'Passed System Test') {
+					array_push($problem_time_array[(string)$row->division][0], (int)$row->level_one_time_elapsed);
+				}
+				if ((string)$row->level_two_status === 'Passed System Test') {
+					array_push($problem_time_array[(string)$row->division][1], (int)$row->level_two_time_elapsed);
+				}
+				if ((string)$row->level_three_status === 'Passed System Test') {
+					array_push($problem_time_array[(string)$row->division][2], (int)$row->level_three_time_elapsed);
+				}
 				if (!array_key_exists((string)$row->coder_id, $ids_array)) {
 					continue;
 				}
-				//TODO: null values
 				array_push($results, array(
 					'match_id'					 => (int)$match->id,
 					'coder_id'					 => (int)$row->coder_id,
@@ -288,23 +297,41 @@ class Algorithm_model extends CI_Model {
 					'problem1_final_points'		 => (double)$row->level_one_final_points,
 					'problem1_status'			 => (string)$row->level_one_status,
 					'problem1_time'				 => (int)$row->level_one_time_elapsed,
-					'problem1_rank'				 => (int)$row->level_one_placed, //Todo: re-calculate it
+					'problem1_rank'				 => null,
 					'problem1_language'			 => (string)$row->level_one_language,
 					'problem2_id'				 => (int)$row->level_two_problem_id,
 					'problem2_submission_points' => (double)$row->level_two_submission_points,
 					'problem2_final_points'		 => (double)$row->level_two_final_points,
 					'problem2_status'			 => (string)$row->level_two_status,
 					'problem2_time'				 => (int)$row->level_two_time_elapsed,
-					'problem2_rank'				 => (int)$row->level_two_placed, //Todo: re-calculate it
+					'problem2_rank'				 => null,
 					'problem2_language'			 => (string)$row->level_two_language,
 					'problem3_id'				 => (int)$row->level_three_problem_id,
 					'problem3_submission_points' => (double)$row->level_three_submission_points,
 					'problem3_final_points'		 => (double)$row->level_three_final_points,
 					'problem3_status'			 => (string)$row->level_three_status,
 					'problem3_time'				 => (int)$row->level_three_time_elapsed,
-					'problem3_rank'				 => (int)$row->level_three_placed, //Todo: re-calculate it
+					'problem3_rank'				 => null,
 					'problem3_language'			 => (string)$row->level_three_language
 				));
+			}
+			sort($problem_time_array['1'][0]);
+			sort($problem_time_array['1'][1]);
+			sort($problem_time_array['1'][2]);
+			sort($problem_time_array['2'][0]);
+			sort($problem_time_array['2'][1]);
+			sort($problem_time_array['2'][2]);
+			for ($i = 0; $i < count($results); ++$i) {
+				$div = (string)$results[$i]['division'];
+				if ($results[$i]['problem1_status'] === 'Passed System Test') {
+					$results[$i]['problem1_rank'] = array_search((int)$results[$i]['problem1_time'], $problem_time_array[$div][0]) + 1;
+				}
+				if ($results[$i]['problem2_status'] === 'Passed System Test') {
+					$results[$i]['problem2_rank'] = array_search((int)$results[$i]['problem2_time'], $problem_time_array[$div][1]) + 1;
+				}
+				if ($results[$i]['problem3_status'] === 'Passed System Test') {
+					$results[$i]['problem3_rank'] = array_search((int)$results[$i]['problem3_time'], $problem_time_array[$div][2]) + 1;
+				}
 			}
 		}
 		$this->update_status(null);
