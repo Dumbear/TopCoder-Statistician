@@ -73,7 +73,7 @@
 			<form action="admin/login" method="post" class="login">
 				<table class="gadget">
 					<tr><th colspan="3">Login</th></tr>
-					<tr><td>Key:</td><td><input name="key" type="password" style="width: 10em" /></td><td><input type="submit" value="Login" /></td></tr>
+					<tr><td>Key:</td><td><input name="key" type="password" style="width: 100%" /></td><td><input type="submit" value="Login" /></td></tr>
 				</table>
 			</form>
 <?php	} else { ?>

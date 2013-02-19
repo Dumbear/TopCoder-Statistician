@@ -388,9 +388,11 @@ class Algorithm_model extends CI_Model {
 				$this->db->update('coders');
 			}
 		}
-		$this->db->set('status', $this->map_match_status['pending']);
-		$this->db->where_in('id', array_keys($matches));
-		$this->db->update('algorithm_matches');
+		if (count($matches) !== 0) {
+			$this->db->set('status', $this->map_match_status['pending']);
+			$this->db->where_in('id', array_keys($matches));
+			$this->db->update('algorithm_matches');
+		}
 		foreach (array_keys($matches) as $id) {
 			if (($match = $this->get_match((int)$id)) !== null) {
 				$this->do_update_match($match);

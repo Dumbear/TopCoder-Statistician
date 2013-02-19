@@ -2,7 +2,7 @@
 
 if (!function_exists('curl_operate')) {
 	function curl_operate($url) {
-		exec("curl {$url} >/dev/null 2>&1 &");
+		exec("curl -m 0 {$url} >/dev/null 2>&1 &");
 	}
 }
 
