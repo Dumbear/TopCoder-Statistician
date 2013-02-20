@@ -13,6 +13,9 @@
 							<th>Rank</th>
 							<th>Handle</th>
 							<th>Points</th>
+<?php	if ((int)$match->type === 1) { ?>
+							<th>Ad.</th>
+<?php	} ?>
 							<th>Level 1</th>
 							<th>Level 2</th>
 							<th>Level 3</th>
@@ -32,7 +35,10 @@
 						<tr>
 							<td><a href="<?php echo algorithm_room_url($match->id, $result->coder_id); ?>"><?php echo $result->division_rank; ?></a></td>
 							<td><a href="algorithm/coder/<?php echo $result->coder_id; ?>" class="coder <?php echo get_rating_css($new_rating); ?>"><?php echo $result->handle; ?></a></td>
-							<td><?php echo $result->final_points; ?></td>
+							<td><?php echo sprintf('%.2f', $result->final_points); ?></td>
+<?php	if ((int)$match->type === 1) { ?>
+							<td><?php echo (int)$result->advanced === 1 ? 'Y' : 'N'; ?></td>
+<?php	} ?>
 <?php		for ($i = 1; $i <= 3; ++$i) {
 				$problem_points = (double)eval("return \$result->problem{$i}_final_points;");
 				$problem_status = eval("return \$result->problem{$i}_status;");
@@ -86,7 +92,7 @@
 						<tr>
 							<td><a href="<?php echo algorithm_room_url($match->id, $result->coder_id); ?>"><?php echo $result->division_rank; ?></a></td>
 							<td><a href="algorithm/coder/<?php echo $result->coder_id; ?>" class="coder <?php echo get_rating_css($new_rating); ?>"><?php echo $result->handle; ?></a></td>
-							<td><?php echo $result->final_points; ?></td>
+							<td><?php echo sprintf('%.2f', $result->final_points); ?></td>
 <?php		for ($i = 1; $i <= 3; ++$i) {
 				$problem_points = (double)eval("return \$result->problem{$i}_final_points;");
 				$problem_status = eval("return \$result->problem{$i}_status;");

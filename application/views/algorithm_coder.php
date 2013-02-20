@@ -37,7 +37,7 @@
 							<td><a href="algorithm/match/<?php echo $result->match_id; ?>" class="match"><?php echo $result->short_name; ?></a></td>
 							<td><?php echo $result->division; ?></td>
 							<td><a href="<?php echo algorithm_room_url($result->match_id, $result->coder_id); ?>"><?php echo $result->division_rank; ?></a></td>
-							<td><?php echo $result->final_points; ?></td>
+							<td><?php echo sprintf('%.2f', $result->final_points); ?></td>
 <?php		for ($i = 1; $i <= 3; ++$i) {
 				$problem_points = (double)eval("return \$result->problem{$i}_final_points;");
 				$problem_status = eval("return \$result->problem{$i}_status;");

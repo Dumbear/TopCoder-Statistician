@@ -10,6 +10,7 @@
 					<thead>
 						<tr>
 							<th>Handle</th>
+							<th>Real Name</th>
 							<th># Matches</th>
 							<th>Rating</th>
 							<th>Max Rating</th>
@@ -21,6 +22,7 @@
 <?php	foreach ($coders as $coder) { ?>
 						<tr>
 							<td><a href="algorithm/coder/<?php echo $coder->id; ?>" class="coder <?php echo get_rating_css($coder->algorithm_rating); ?>"><?php echo $coder->handle; ?></a></td>
+							<td><?php echo $coder->real_name; ?></td>
 							<td><?php echo $coder->n_algorithm_matches; ?></td>
 							<td><span class="rating <?php echo get_rating_css($coder->algorithm_rating); ?>"><?php echo $coder->algorithm_rating; ?></span></td>
 							<td><span class="rating <?php echo get_rating_css($coder->max_rating); ?>"><?php echo $coder->max_rating; ?></span></td>

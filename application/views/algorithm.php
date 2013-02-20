@@ -18,6 +18,8 @@
 							<th>Match</th>
 							<th style="width: 10em">Time</th>
 						</tr>
+					</thead>
+					<tbody>
 <?php	while ($count < 50 && $count < count($matches)) { ?>
 						<tr>
 							<td class="match"><a href="algorithm/match/<?php echo $matches[$count]->id; ?>" class="match"><?php echo $matches[$count]->short_name; ?></a></td>
@@ -25,8 +27,6 @@
 						</tr>
 <?php		++$count; ?>
 <?php	} ?>
-					</thead>
-					<tbody>
 					</tbody>
 				</table>
 			</div>
@@ -37,6 +37,8 @@
 							<th>Match</th>
 							<th style="width: 10em">Time</th>
 						</tr>
+					</thead>
+					<tbody>
 <?php	while ($count < 100 && $count < count($matches)) { ?>
 						<tr>
 							<td class="match"><a href="algorithm/match/<?php echo $matches[$count]->id; ?>" class="match"><?php echo $matches[$count]->short_name; ?></a></td>
@@ -44,8 +46,6 @@
 						</tr>
 <?php		++$count; ?>
 <?php	} ?>
-					</thead>
-					<tbody>
 					</tbody>
 				</table>
 			</div>
