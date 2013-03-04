@@ -355,17 +355,23 @@ class Algorithm_model extends CI_Model {
 		$this->db->update('algorithm_matches');
 
 		$results = $this->do_fetch_results($match);
-		if ($results !== false && count($results) > 0) {
+		if ($results !== false) {
 			$this->db->where('match_id', (int)$match->id);
 			$this->db->delete('algorithm_match_results');
-			if ($this->db->insert_batch('algorithm_match_results', $results) !== true) {
-				$ok = false;
+			if (count($results) > 0) {
+				if ($this->db->insert_batch('algorithm_match_results', $results) !== true) {
+					$ok = false;
+				}
 			}
+		} else {
+			$ok = false;
 		}
 
-		$this->db->set('status', $this->map_match_status['ok']);
-		$this->db->where('id', (int)$match->id);
-		$this->db->update('algorithm_matches');
+		if ($ok) {
+			$this->db->set('status', $this->map_match_status['ok']);
+			$this->db->where('id', (int)$match->id);
+			$this->db->update('algorithm_matches');
+		}
 
 		$this->update_status(null);
 		$this->update_log("Updating match {$match->short_name}: " . ($ok === false ? 'failed' : 'done') . '.');
@@ -388,7 +394,7 @@ class Algorithm_model extends CI_Model {
 				$this->db->update('coders');
 			}
 		}
-		if (count($matches) !== 0) {
+		if (count($matches) > 0) {
 			$this->db->set('status', $this->map_match_status['pending']);
 			$this->db->where_in('id', array_keys($matches));
 			$this->db->update('algorithm_matches');
@@ -408,9 +414,7 @@ class Algorithm_model extends CI_Model {
 		$this->update_status('Refreshing match archive...');
 		$new_matches = $this->do_fetch_new_matches();
 		if ($new_matches !== false && count($new_matches) > 0) {
-			if ($this->db->insert_batch('algorithm_matches', $new_matches) !== true) {
-				$ok = false;
-			}
+			$this->db->insert_batch('algorithm_matches', $new_matches);
 		}
 		$this->update_status(null);
 		$this->update_log('Refreshing match archive: ' . ($ok === false ? 'failed' : 'done') . '.');
@@ -434,9 +438,7 @@ class Algorithm_model extends CI_Model {
 		$this->update_status('Adding coders...');
 		$coders = $this->do_fetch_coders($coders);
 		if ($coders !== false && count($coders) > 0) {
-			if ($this->db->insert_batch('coders', $coders) !== true) {
-				$ok = false;
-			}
+			$this->db->insert_batch('coders', $coders);
 		}
 		$this->update_status(null);
 		$this->update_log('Adding coders: ' . ($ok === false ? 'failed' : 'done') . '.');
@@ -459,6 +461,12 @@ class Algorithm_model extends CI_Model {
 
 		$this->update_log('Will refresh and update match archive.', false);
 
+		$this->db->set('status', $this->map_match_status['pending']);
+		$this->db->order_by('time DESC');
+		$this->db->limit(3);
+		$this->db->update('algorithm_matches');
+		$this->update_log('Will also re-update the last 3 matches.');
+
 		if ($ok && $this->do_refresh_match_archive() === false) {
 			$ok = false;
 		}
@@ -480,10 +488,6 @@ class Algorithm_model extends CI_Model {
 	}
 
 	public function add_coders($coders) {
-		if (count($coders) === 0) {
-			return true;
-		}
-
 		if ($this->lock() === false) {
 			return false;
 		}
