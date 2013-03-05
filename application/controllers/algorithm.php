@@ -55,6 +55,26 @@ class Algorithm extends CI_Controller {
 		$data['coders'] = $this->algorithm_model->get_all_coders();
 		$this->template->display_algorithm('algorithm_all_coders', $data);
 	}
+
+	public function top_problem_ranks() {
+		$data = array();
+		$data['limit'] = 16;
+		$data['results'] = array(
+			array(
+				$this->algorithm_model->get_top_problem_results(1, 1, $data['limit']),
+				$this->algorithm_model->get_top_problem_results(1, 2, $data['limit'])
+			),
+			array(
+				$this->algorithm_model->get_top_problem_results(2, 1, $data['limit']),
+				$this->algorithm_model->get_top_problem_results(2, 2, $data['limit'])
+			),
+			array(
+				$this->algorithm_model->get_top_problem_results(3, 1, $data['limit']),
+				$this->algorithm_model->get_top_problem_results(3, 2, $data['limit'])
+			)
+		);
+		$this->template->display_algorithm('algorithm_top_problem_ranks', $data);
+	}
 }
 
 /* End of file algorithm.php */

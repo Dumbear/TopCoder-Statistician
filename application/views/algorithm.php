@@ -59,10 +59,10 @@
 			<table class="gadget">
 				<tr><th>Statistics</th></tr>
 				<tr><td><a href="algorithm/all_coders">All Coders</a></td></tr>
-<!-- 				<tr><th>Records</th></tr>
-				<tr><td><a href="javascript: void(0)">First Coders to Achieve Highest Ratings</a></td></tr>
+ 				<tr><th>Records</th></tr>
+				<tr><td><a href="algorithm/top_problem_ranks">Top Problem Ranks</a></td></tr>
+				<!-- <tr><td><a href="javascript: void(0)">First Coders to Achieve Highest Ratings</a></td></tr>
 				<tr><td><a href="javascript: void(0)">Top 20 Division Ranks</a></td></tr>
-				<tr><td><a href="javascript: void(0)">Top 20 Problem Ranks</a></td></tr>
 				<tr><th>Tools</th></tr>
 				<tr><td><a href="javascript: void(0)">Compete between WHUACMers</a></td></tr> -->
 			</table>

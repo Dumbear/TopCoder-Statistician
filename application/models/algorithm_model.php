@@ -136,6 +136,19 @@ class Algorithm_model extends CI_Model {
 		return $query->result();
 	}
 
+	public function get_top_problem_results($problem, $division, $limit) {
+		$this->db->select('algorithm_match_results.*, algorithm_matches.*, coders.handle');
+		$this->db->from('algorithm_match_results');
+		$this->db->join('algorithm_matches', 'algorithm_match_results.match_id = algorithm_matches.id', 'inner');
+		$this->db->join('coders', 'algorithm_match_results.coder_id = coders.id', 'inner');
+		$this->db->where("problem{$problem}_status", 'Passed System Test');
+		$this->db->where('division', $division);
+		$this->db->order_by("problem{$problem}_rank, algorithm_matches.time, coders.handle");
+		$this->db->limit($limit);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	public function get_status() {
 		$this->db->from('updating_status');
 		$this->db->where('type', 'algorithm');
