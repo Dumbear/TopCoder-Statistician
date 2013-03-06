@@ -35,7 +35,7 @@
 <?php	} ?>
 					<tr><td rowspan="5">Add Coders:</td><th>Coder</th></tr>
 					<tr><td><input id="input_add_coders" type="text" style="width: 16em" /></td></tr>
-					<tr><td class="notice">* Like <span style="font-style: oblique">handle1,realname1 handle2,realname2...</span></td></tr>
+					<tr><td class="notice">* Like <span style="font-style: oblique">handle1:realname1 handle2:realname2...</span></td></tr>
 <?php	if ($algorithm_status->locked === '0') { ?>
 					<tr><td><a id="a_add_coders" href="javascript: void(0)">Add All</a></td></tr>
 <?php	} else { ?>

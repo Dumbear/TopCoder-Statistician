@@ -189,10 +189,25 @@ table.tight {
 	color: #999;
 }
 
-.result.cpp {
+.result.java, .result.cpp, .result.csharp, .result.vb {
 	font-style: oblique;
 	font-weight: bold;
-	color: #FF9;
+}
+
+.result.java {
+	color: #00FF00;
+}
+
+.result.cpp {
+	color: #FFFF99;
+}
+
+.result.csharp {
+	color: #6666FF;
+}
+
+.result.vb {
+	color: #81D9FF;
 }
 
 .result.failed {
