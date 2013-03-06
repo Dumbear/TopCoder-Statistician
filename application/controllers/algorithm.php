@@ -56,6 +56,16 @@ class Algorithm extends CI_Controller {
 		$this->template->display_algorithm('algorithm_all_coders', $data);
 	}
 
+	public function top_ranks() {
+		$data = array();
+		$data['limit'] = 16;
+		$data['results'] = array(
+			$this->algorithm_model->get_top_division_results(1, $data['limit']),
+			$this->algorithm_model->get_top_division_results(2, $data['limit'])
+		);
+		$this->template->display_algorithm('algorithm_top_ranks', $data);
+	}
+
 	public function top_problem_ranks() {
 		$data = array();
 		$data['limit'] = 16;
