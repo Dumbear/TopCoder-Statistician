@@ -66,11 +66,19 @@ div.container {
 	box-shadow: 0 0 1em #DDD;
 }
 
-div.container .heading {
+.heading {
+	font-weight: bold;
+}
+
+.heading>.sub {
+	font-weight: normal;
+	font-size: 75%;
+}
+
+div.container>.heading {
 	border-bottom: 1px solid #AAA;
 	padding-bottom: 4px;
 	font-size: 120%;
-	font-weight: bold;
 }
 
 ul.menu {
@@ -122,6 +130,10 @@ table th {
 
 table td {
 	padding: 0 0.8em;
+}
+
+tr.split {
+	border-top: 1px solid #888;
 }
 
 table.fixed {

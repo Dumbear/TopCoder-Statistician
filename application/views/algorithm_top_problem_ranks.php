@@ -9,7 +9,7 @@
 			<div class="heading">Level <?php echo $level; ?></div>
 <?php		foreach ($division_array as $division_key => $division) { ?>
 			<div class="<?php echo $division_key === 0 ? 'left' : 'right'; ?>-column">
-				<div>Division <?php echo $division; ?></div>
+				<div class="heading">Division <?php echo $division; ?></div>
 				<table class="tight">
 					<thead>
 						<tr>
