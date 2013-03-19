@@ -151,12 +151,13 @@
 							<td><a href="<?php echo algorithm_room_url($result->match_id, $result->coder_id); ?>"><?php echo $result->division_rank; ?></a></td>
 							<td><?php echo sprintf('%.2f', $result->final_points); ?></td>
 <?php		for ($level = 1; $level <= 3; ++$level) {
+				$problem_id = eval("return \$result->problem{$level}_id;");
 				$problem_points = (double)eval("return \$result->problem{$level}_final_points;");
 				$problem_status = eval("return \$result->problem{$level}_status;");
 				$problem_language = eval("return \$result->problem{$level}_language;");
 				if ($problem_status === 'Passed System Test') {
 ?>
-							<td><span class="result <?php echo get_language_css($problem_language); ?>"><?php echo sprintf('%.2f', $problem_points); ?></span></td>
+							<td><a href="algorithm/source_code/<?php echo $result->match_id; ?>/<?php echo $result->coder_id; ?>/<?php echo $problem_id; ?>" target="_blank" style="font-family: monospace">[+]</a> <span class="result <?php echo get_language_css($problem_language); ?>"><?php echo sprintf('%.2f', $problem_points); ?></span></td>
 <?php			} else { ?>
 							<td><span class="result <?php echo get_problem_status_css($problem_status); ?>"><?php echo $problem_status; ?></span></td>
 <?php			} ?>

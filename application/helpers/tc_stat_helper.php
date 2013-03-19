@@ -6,6 +6,36 @@ if (!function_exists('curl_operate')) {
 	}
 }
 
+if (!function_exists('login_tc')) {
+	function login_tc() {
+		$ci = get_instance();
+		$username = $ci->config->item('tc_username');
+		$password = $ci->config->item('tc_password');
+		$cookie_jar = $ci->config->item('tc_cookie');
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, 'https://community.topcoder.com/tc');
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, "module=Login&username={$username}&password={$password}&rem=on");
+		curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_jar);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_exec($ch);
+		curl_close($ch);
+	}
+}
+
+if (!function_exists('fetch_tc_html_source')) {
+	function fetch_tc_html_source($url) {
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_COOKIEFILE, get_instance()->config->item('tc_cookie'));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$source = curl_exec($ch);
+		curl_close($ch);
+		return $source === false ? null : $source;
+	}
+}
+
 if (!function_exists('fetch_algorithm_match_list')) {
 	function fetch_algorithm_match_list() {
 		try {
@@ -47,6 +77,27 @@ if (!function_exists('fetch_algorithm_match_results')) {
 		} catch (Exception $e) {
 		}
 		return false;
+	}
+}
+
+if (!function_exists('fetch_algorithm_source_code')) {
+	function fetch_algorithm_source_code($match_id, $coder_id, $problem_id) {
+		$source_code = null;
+		$url = "http://community.topcoder.com/stat?c=problem_solution&rd={$match_id}&cr={$coder_id}&pm={$problem_id}";
+		$pattern = '/<td class="problemText" colspan="8" valign="middle" align="left">([\s\S]*?)<\/td>/i';
+		for ($i = 0; $i < 2; ++$i) {
+			if ($i > 0) {
+				login_tc();
+			}
+			$source = fetch_tc_html_source($url);
+			if (preg_match($pattern, $source, $matches)) {
+				$source_code = trim($matches[1]);
+				$source_code = str_ireplace('&#160;', ' ', $source_code);
+				$source_code = str_ireplace('<br>', "\n", $source_code);
+				break;
+			}
+		}
+		return $source_code;
 	}
 }
 

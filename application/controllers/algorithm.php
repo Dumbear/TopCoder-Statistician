@@ -85,6 +85,14 @@ class Algorithm extends CI_Controller {
 		);
 		$this->template->display_algorithm('algorithm_top_problem_ranks', $data);
 	}
+
+	public function source_code($match_id = null, $coder_id = null, $problem_id = null) {
+		$source_code = $this->algorithm_model->get_source_code($match_id, $coder_id, $problem_id);
+		if ($source_code === null) {
+			show_404();
+		}
+		echo "<pre>{$source_code}</pre>";
+	}
 }
 
 /* End of file algorithm.php */

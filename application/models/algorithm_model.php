@@ -136,6 +136,15 @@ class Algorithm_model extends CI_Model {
 		return $query->result();
 	}
 
+	public function get_source_code($match_id, $coder_id, $problem_id) {
+		$this->db->from('algorithm_source_code');
+		$this->db->where('match_id', $match_id);
+		$this->db->where('coder_id', $coder_id);
+		$this->db->where('problem_id', $problem_id);
+		$query = $this->db->get();
+		return $query->num_rows() === 1 ? $query->row()->source_code : null;
+	}
+
 	public function get_top_division_results($division, $limit) {
 		$this->db->select('algorithm_match_results.*, algorithm_matches.*, coders.handle');
 		$this->db->from('algorithm_match_results');
@@ -364,6 +373,34 @@ class Algorithm_model extends CI_Model {
 		return $results;
 	}
 
+	protected function do_fetch_source_code($match, $results) {
+		$source_code = array();
+		$this->update_status("Fetching match {$match->short_name} source code...");
+		foreach ($results as $result) {
+			for ($level = 1; $level <= 3; ++$level) {
+				if ($result["problem{$level}_status"] === 'Passed System Test') {
+					$code = fetch_algorithm_source_code($result['match_id'], $result['coder_id'], $result["problem{$level}_id"]);
+					if ($code === false) {
+						$source_code = false;
+						break;
+					}
+					array_push($source_code, array(
+						'match_id'	  => $result['match_id'],
+						'coder_id'	  => $result['coder_id'],
+						'problem_id'  => $result["problem{$level}_id"],
+						'source_code' => $code
+					));
+				}
+			}
+			if ($source_code === false) {
+				break;
+			}
+		}
+		$this->update_status(null);
+		$this->update_log("Fetching match {$match->short_name} source code: " . ($source_code === false ? 'failed' : 'done') . '.');
+		return $source_code;
+	}
+
 	protected function do_update_match($match) {
 		if ($this->db->count_all('coders') === 0) {
 			$this->db->set('status', $this->map_match_status['ok']);
@@ -386,6 +423,19 @@ class Algorithm_model extends CI_Model {
 			if (count($results) > 0) {
 				if ($this->db->insert_batch('algorithm_match_results', $results) !== true) {
 					$ok = false;
+				} else {
+					$source_code = $this->do_fetch_source_code($match, $results);
+					if ($source_code !== false) {
+						$this->db->where('match_id', (int)$match->id);
+						$this->db->delete('algorithm_source_code');
+						if (count($source_code) > 0) {
+							if ($this->db->insert_batch('algorithm_source_code', $source_code) !== true) {
+								$ok = false;
+							}
+						}
+					} else {
+						$ok = false;
+					}
 				}
 			}
 		} else {
