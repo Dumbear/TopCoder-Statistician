@@ -45,6 +45,18 @@ class Algorithm_model extends CI_Model {
 		return $ids_array;
 	}
 
+	public function get_all_source_code_ids_of_match($match_id) {
+		$this->db->select('coder_id, problem_id');
+		$this->db->from('algorithm_source_code');
+		$this->db->where('match_id', $match_id);
+		$ids = $this->db->get()->result();
+		$ids_array = array();
+		foreach ($ids as $id) {
+			$ids_array["{$id->coder_id},{$id->problem_id}"] = null;
+		}
+		return $ids_array;
+	}
+
 	public function count_useful_matches($type) {
 		//TODO: make it useful
 		$this->db->from('algorithm_matches');
@@ -376,21 +388,27 @@ class Algorithm_model extends CI_Model {
 	protected function do_fetch_source_code($match, $results) {
 		$source_code = array();
 		$this->update_status("Fetching match {$match->short_name} source code...");
+		$ids_array = $this->get_all_source_code_ids_of_match($match->id);
 		foreach ($results as $result) {
 			for ($level = 1; $level <= 3; ++$level) {
-				if ($result["problem{$level}_status"] === 'Passed System Test') {
-					$code = fetch_algorithm_source_code($result['match_id'], $result['coder_id'], $result["problem{$level}_id"]);
-					if ($code === false) {
-						$source_code = false;
-						break;
-					}
-					array_push($source_code, array(
-						'match_id'	  => $result['match_id'],
-						'coder_id'	  => $result['coder_id'],
-						'problem_id'  => $result["problem{$level}_id"],
-						'source_code' => $code
-					));
+				$status = $result["problem{$level}_status"];
+				if ($status === '' || $status === 'Opened') {
+					continue;
 				}
+				if (array_key_exists((string)$result['coder_id'] . ',' . (string)$result["problem{$level}_id"], $ids_array)) {
+					continue;
+				}
+				$code = fetch_algorithm_source_code($result['match_id'], $result['coder_id'], $result["problem{$level}_id"]);
+				if ($code === false) {
+					$source_code = false;
+					break;
+				}
+				array_push($source_code, array(
+					'match_id'	  => $result['match_id'],
+					'coder_id'	  => $result['coder_id'],
+					'problem_id'  => $result["problem{$level}_id"],
+					'source_code' => $code
+				));
 			}
 			if ($source_code === false) {
 				break;
@@ -426,8 +444,8 @@ class Algorithm_model extends CI_Model {
 				} else {
 					$source_code = $this->do_fetch_source_code($match, $results);
 					if ($source_code !== false) {
-						$this->db->where('match_id', (int)$match->id);
-						$this->db->delete('algorithm_source_code');
+						// $this->db->where('match_id', (int)$match->id);
+						// $this->db->delete('algorithm_source_code');
 						if (count($source_code) > 0) {
 							if ($this->db->insert_batch('algorithm_source_code', $source_code) !== true) {
 								$ok = false;

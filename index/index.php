@@ -122,6 +122,8 @@ if (defined('ENVIRONMENT'))
  */
 	// $assign_to_config['name_of_config_item'] = 'value of config item';
 
+ini_set('pcre.backtrack_limit', 1000000);
+
 
 
 // --------------------------------------------------------------------

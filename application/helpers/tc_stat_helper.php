@@ -32,7 +32,7 @@ if (!function_exists('fetch_tc_html_source')) {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$source = curl_exec($ch);
 		curl_close($ch);
-		return $source === false ? null : $source;
+		return $source;
 	}
 }
 
@@ -82,7 +82,7 @@ if (!function_exists('fetch_algorithm_match_results')) {
 
 if (!function_exists('fetch_algorithm_source_code')) {
 	function fetch_algorithm_source_code($match_id, $coder_id, $problem_id) {
-		$source_code = null;
+		$source_code = false;
 		$url = "http://community.topcoder.com/stat?c=problem_solution&rd={$match_id}&cr={$coder_id}&pm={$problem_id}";
 		$pattern = '/<td class="problemText" colspan="8" valign="middle" align="left">([\s\S]*?)<\/td>/i';
 		for ($i = 0; $i < 2; ++$i) {
@@ -90,7 +90,7 @@ if (!function_exists('fetch_algorithm_source_code')) {
 				login_tc();
 			}
 			$source = fetch_tc_html_source($url);
-			if (preg_match($pattern, $source, $matches)) {
+			if ($source !== false && preg_match($pattern, $source, $matches)) {
 				$source_code = trim($matches[1]);
 				$source_code = str_ireplace('&#160;', ' ', $source_code);
 				$source_code = str_ireplace('<br>', "\n", $source_code);
