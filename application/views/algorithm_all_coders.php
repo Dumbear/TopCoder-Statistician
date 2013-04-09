@@ -9,6 +9,7 @@
 				<table class="tight"<?php if (count($coders) === 0) echo ' style="display: none"'; ?>>
 					<thead>
 						<tr>
+							<th>Rank</th>
 							<th>Handle</th>
 							<th>Real Name</th>
 							<th># Matches</th>
@@ -19,8 +20,11 @@
 						</tr>
 					</thead>
 					<tbody>
+<?php	$rank = 0; ?>
 <?php	foreach ($coders as $coder) { ?>
+<?php		++$rank; ?>
 						<tr>
+							<td><?php echo $rank; ?></td>
 							<td><a href="algorithm/coder/<?php echo $coder->id; ?>" class="coder <?php echo get_rating_css($coder->algorithm_rating); ?>"><?php echo $coder->handle; ?></a></td>
 							<td><?php echo $coder->real_name; ?></td>
 							<td><?php echo $coder->n_algorithm_matches; ?></td>
