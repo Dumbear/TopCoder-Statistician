@@ -25,15 +25,15 @@
 <?php		++$rank; ?>
 						<tr>
 							<td><?php echo $rank; ?></td>
-							<td><a href="algorithm/coder/<?php echo $coder->id; ?>" class="coder <?php echo get_rating_css($coder->algorithm_rating); ?>"><?php echo $coder->handle; ?></a></td>
-							<td><?php echo $coder->real_name; ?></td>
-							<td><?php echo $coder->n_algorithm_matches; ?></td>
-							<td><span class="rating <?php echo get_rating_css($coder->algorithm_rating); ?>"><?php echo $coder->algorithm_rating; ?></span></td>
-							<td><span class="rating <?php echo get_rating_css($coder->max_rating); ?>"><?php echo $coder->max_rating; ?></span></td>
-							<td><span class="rating <?php echo get_rating_css($coder->min_rating); ?>"><?php echo $coder->min_rating; ?></span></td>
-							<td><?php echo $coder->algorithm_volatility; ?></td>
+							<td><?php echo $this->algorithm_html->coder($coder, 'handle'); ?></td>
+							<td><?php echo $this->algorithm_html->coder($coder, 'real_name'); ?></td>
+							<td><?php echo $this->algorithm_html->coder($coder, 'n_matches'); ?></td>
+							<td><?php echo $this->algorithm_html->coder($coder, 'rating'); ?></td>
+							<td><?php echo $this->algorithm_html->coder($coder, 'max_rating'); ?></td>
+							<td><?php echo $this->algorithm_html->coder($coder, 'min_rating'); ?></td>
+							<td><?php echo $this->algorithm_html->coder($coder, 'volatility'); ?></td>
 						</tr>
-<?php	}?>
+<?php	} ?>
 					</tbody>
 				</table>
 			</div>
