@@ -47,6 +47,10 @@ class Algorithm_html {
 					$html = "<span class=\"result {$status_class}\">{$status}</span>";
 				}
 				break;
+			case 'problem1_rank': case 'problem2_rank': case 'problem3_rank':
+				$rank = eval("return \$result->{$item};");
+				$html = "{$rank}";
+				break;
 			case 'problem1_time': case 'problem2_time': case 'problem3_time':
 				$time = eval("return \$result->{$item};");
 				$time = sprintf('%d:%02d:%02d.%03d', $time / 3600000, $time / 60000 % 60, $time / 1000 % 60, $time % 1000);

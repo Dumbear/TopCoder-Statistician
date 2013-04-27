@@ -20,7 +20,7 @@
 					<tbody>
 <?php			foreach ($results[$level - 1][$division - 1] as $result) { ?>
 						<tr>
-							<td><?php echo $this->algorithm_html->match_result($result, 'rank'); ?></td>
+							<td><?php echo $this->algorithm_html->match_result($result, "problem{$level}_rank"); ?></td>
 							<td><?php echo $this->algorithm_html->match_result($result, 'match'); ?></td>
 							<td><?php echo $this->algorithm_html->match_result($result, 'coder'); ?></td>
 							<td><?php echo $this->algorithm_html->match_result($result, "problem{$level}_time"); ?></td>
