@@ -91,7 +91,7 @@ class Algorithm extends CI_Controller {
 		if ($source_code === null) {
 			show_404();
 		}
-		echo "<pre>{$source_code}</pre>";
+		echo $source_code;
 	}
 }
 

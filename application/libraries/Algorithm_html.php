@@ -39,10 +39,11 @@ class Algorithm_html {
 				$source_code_url = "algorithm/source_code/{$result->match_id}/{$result->coder_id}/{$problem_id}";
 				if ($status === 'Passed System Test') {
 					$points = sprintf('%.2f', (double)eval("return \$result->{$item}_final_points;"));
-					$status_class = $this->language_class(eval("return \$result->{$item}_language;"));
-					$html = "<a class=\"result {$status_class}\" href=\"{$source_code_url}\" target=\"_blank\">{$points}</a>";
+					$language_class = $this->language_class(eval("return \$result->{$item}_language;"));
+					$html = "<a class=\"result view-source-code {$language_class}\" href=\"{$source_code_url}\" language=\"{$language_class}\">{$points}</a>";
 				} else if ($status !== '' && $status !== 'Opened') {
-					$html = "<a class=\"result {$status_class}\" href=\"{$source_code_url}\" target=\"_blank\">{$status}</a>";
+					$language_class = $this->language_class(eval("return \$result->{$item}_language;"));
+					$html = "<a class=\"result view-source-code {$status_class}\" href=\"{$source_code_url}\" language=\"{$language_class}\">{$status}</a>";
 				} else {
 					$html = "<span class=\"result {$status_class}\">{$status}</span>";
 				}
