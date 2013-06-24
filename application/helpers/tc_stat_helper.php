@@ -16,7 +16,7 @@ if (!function_exists('login_tc')) {
 		$ci = get_instance();
 		$username = $ci->config->item('tc_username');
 		$password = $ci->config->item('tc_password');
-		$cookie_jar = $ci->config->item('tc_cookie');
+		$cookie_jar = $ci->config->item('cache_path') . 'tc_cookie';
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, 'https://community.topcoder.com/tc');
@@ -33,7 +33,7 @@ if (!function_exists('fetch_tc_html_source')) {
 	function fetch_tc_html_source($url) {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_COOKIEFILE, get_instance()->config->item('tc_cookie'));
+		curl_setopt($ch, CURLOPT_COOKIEFILE, get_instance()->config->item('cache_path') . 'tc_cookie');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$source = curl_exec($ch);
 		curl_close($ch);
@@ -55,7 +55,15 @@ if (!function_exists('fetch_algorithm_match_list')) {
 if (!function_exists('fetch_coder_list')) {
 	function fetch_coder_list() {
 		try {
-			$data = new SimpleXMLElement('http://community.topcoder.com/tc?module=BasicData&c=dd_coder_list', null, true);
+			$path = get_instance()->config->item('cache_path') . 'coder_list.xml';
+			if (is_readable($path)) {
+				$data = new SimpleXMLElement($path, null, true);
+			} else {
+				$data = new SimpleXMLElement('http://community.topcoder.com/tc?module=BasicData&c=dd_coder_list', null, true);
+				if (is_writable($path)) {
+					$data->asXML($path);
+				}
+			}
 			return $data;
 		} catch (Exception $e) {
 		}

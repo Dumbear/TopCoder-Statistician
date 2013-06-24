@@ -36,6 +36,9 @@ class Admin extends CI_Controller {
 			redirect('/admin');
 		}
 
+		set_time_limit(0);
+		ignore_user_abort(true);
+
 		if ($operation === 'do_refresh_and_update') {
 			$this->load->model('algorithm_model');
 			$this->algorithm_model->refresh_and_update_match_archive();
