@@ -97,7 +97,7 @@ if (!function_exists('fetch_algorithm_source_code')) {
 	function fetch_algorithm_source_code($match_id, $coder_id, $problem_id) {
 		$source_code = false;
 		$url = "http://community.topcoder.com/stat?c=problem_solution&rd={$match_id}&cr={$coder_id}&pm={$problem_id}";
-		$pattern = '/<td class="problemText" colspan="8" valign="middle" align="left">([\s\S]*?)<\/td>/i';
+		$pattern = '/<td class="problemText" colspan="8" valign="middle" class="alignMiddle" align="left">([\s\S]*?)<\/td>/i';
 		for ($i = 0; $i < 2; ++$i) {
 			if ($i > 0) {
 				login_tc();
