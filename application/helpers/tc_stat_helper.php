@@ -34,6 +34,7 @@ if (!function_exists('fetch_tc_html_source')) {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_COOKIEFILE, get_instance()->config->item('cache_path') . 'tc_cookie');
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$source = curl_exec($ch);
 		curl_close($ch);
@@ -96,7 +97,7 @@ if (!function_exists('fetch_algorithm_match_results')) {
 if (!function_exists('fetch_algorithm_source_code')) {
 	function fetch_algorithm_source_code($match_id, $coder_id, $problem_id) {
 		$source_code = false;
-		$url = "http://community.topcoder.com/stat?c=problem_solution&rd={$match_id}&cr={$coder_id}&pm={$problem_id}";
+		$url = "https://community.topcoder.com/stat?c=problem_solution&rd={$match_id}&cr={$coder_id}&pm={$problem_id}";
 		$pattern = '/<td class="problemText" colspan="8" valign="middle" class="alignMiddle" align="left">([\s\S]*?)<\/td>/i';
 		for ($i = 0; $i < 2; ++$i) {
 			if ($i > 0) {
